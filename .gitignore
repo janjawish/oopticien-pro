@@ -1,0 +1,32 @@
+# Secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+/config/mail.local.php
+/config/inbound_mail.local.php
+
+# Private application data: documents, encryption material and database backups
+/storage/
+/oopticien-pro-storage/
+*.sql.bak
+*.bak
+
+# Generated imports, OCR files, downloaded installers and local diagnostics
+/tmp/
+/uploads/
+/logs/
+/tests/fixtures/
+*.log
+
+# PHP / Composer dependencies
+/vendor/
+
+# IDE and operating-system files
+.idea/
+.vscode/
+*.code-workspace
+Thumbs.db
+Desktop.ini
+.DS_Store
+__pycache__/
+*.py[cod]
