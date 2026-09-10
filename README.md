@@ -2,7 +2,7 @@
 
 Application interne de pilotage d’une boutique d’optique, construite pour centraliser le suivi opérationnel autour de Cosium : dossiers clients, prises en charge mutuelles, encaissements, commandes verrier, relances et traçabilité.
 
-> Ce dépôt est prévu pour rester privé. Il ne doit contenir ni données patient, ni documents, ni sauvegardes SQL, ni clé de chiffrement, ni identifiants SMTP/IMAP.
+> Ce dépôt ne doit contenir ni données patient, ni documents, ni sauvegardes SQL, ni clé de chiffrement, ni identifiants SMTP/IMAP.
 
 ## Le besoin métier
 
