@@ -5,14 +5,21 @@ declare(strict_types=1);
  * Configuration locale par défaut pour XAMPP/Laragon.
  * Les secrets SMTP sont lus dans config/mail.local.php ou dans les variables
  * d'environnement OOPTICIEN_SMTP_*.
+ * La base peut être surchargée via config/database.local.php ou les variables
+ * OOPTICIEN_DB_* (utile pour un hébergement distant comme alwaysdata).
  */
 $envBaseUrl = getenv('OOPTICIEN_BASE_URL');
+$envDbHost = getenv('OOPTICIEN_DB_HOST');
+$envDbPort = getenv('OOPTICIEN_DB_PORT');
 $envDbName = getenv('OOPTICIEN_DB_NAME');
 $envDbUser = getenv('OOPTICIEN_DB_USER');
 $envDbPassword = getenv('OOPTICIEN_DB_PASSWORD');
 $envStoragePath = getenv('OOPTICIEN_STORAGE_PATH');
 $envEncryptionKey = getenv('OOPTICIEN_ENCRYPTION_KEY');
 
+$databaseLocalPath = __DIR__ . '/database.local.php';
+$databaseLocal = is_file($databaseLocalPath) ? (require $databaseLocalPath) : [];
+$databaseLocal = is_array($databaseLocal) ? $databaseLocal : [];
 $mailLocalPath = __DIR__ . '/mail.local.php';
 $mailLocal = is_file($mailLocalPath) ? (require $mailLocalPath) : [];
 $mailLocal = is_array($mailLocal) ? $mailLocal : [];
@@ -25,6 +32,12 @@ $mailValue = static function (string $environmentName, string $localKey, mixed $
         return $environmentValue;
     }
     return $mailLocal[$localKey] ?? $default;
+};
+$dbValue = static function (mixed $environmentValue, string $localKey, mixed $default) use ($databaseLocal): mixed {
+    if ($environmentValue !== false && $environmentValue !== '') {
+        return $environmentValue;
+    }
+    return $databaseLocal[$localKey] ?? $default;
 };
 
 return [
@@ -55,11 +68,11 @@ return [
         'ophtalmic_portal_url' => 'https://www.ophtalmicespace.fr/Espaceclient/',
     ],
     'db' => [
-        'host' => '127.0.0.1',
-        'port' => 3306,
-        'name' => $envDbName !== false ? $envDbName : 'oopticien_pro',
-        'user' => $envDbUser !== false ? $envDbUser : 'root',
-        'password' => $envDbPassword !== false ? $envDbPassword : '',
+        'host' => (string) $dbValue($envDbHost, 'host', '127.0.0.1'),
+        'port' => (int) $dbValue($envDbPort, 'port', 3306),
+        'name' => (string) $dbValue($envDbName, 'name', 'oopticien_pro'),
+        'user' => (string) $dbValue($envDbUser, 'user', 'root'),
+        'password' => (string) $dbValue($envDbPassword, 'password', ''),
         'charset' => 'utf8mb4',
     ],
 ];
