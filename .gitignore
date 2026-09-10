@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+/config/database.local.php
 /config/mail.local.php
 /config/inbound_mail.local.php
 
